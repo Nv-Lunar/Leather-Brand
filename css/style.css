@@ -1356,3 +1356,14 @@ h2 em {
     animation-duration: 0.01ms !important;
   }
 }
+
+.footer-credit a {
+    color: #c0c0c0;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-credit a:hover {
+    color: #fff;
+}
