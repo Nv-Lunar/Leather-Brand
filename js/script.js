@@ -167,6 +167,110 @@ productCards.forEach(card => {
 
 
 /* =========================================
+   COLLECTION CAROUSEL
+========================================= */
+
+const collectionProducts = [
+    { image: "assets/1.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-1" },
+    { image: "assets/2.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-2" },
+    { image: "assets/3.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-3" },
+    { image: "assets/4.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-4" },
+    { image: "assets/5.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-5" },
+    { image: "assets/6.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-6" },
+    { image: "assets/7.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-7" },
+    { image: "assets/8.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-8" },
+    { image: "assets/9.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-9" },
+    { image: "assets/10.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-10" },
+    { image: "assets/11.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-11" },
+    { image: "assets/12.jpg", shopee: "https://shopee.co.id/LINK-PRODUK-12" }
+];
+
+
+// Left, Center, Right
+const collectionGroups = [
+    [1, 0, 2],
+    [4, 3, 5],
+    [7, 6, 8],
+    [10, 9, 11]
+];
+
+let collectionIndex = 0;
+
+const collectionLeft = document.querySelector("#collectionLeft");
+const collectionCenter = document.querySelector("#collectionCenter");
+const collectionRight = document.querySelector("#collectionRight");
+
+const collectionPrev = document.querySelector("#collectionPrev");
+const collectionNext = document.querySelector("#collectionNext");
+
+const collectionCounter = document.querySelector("#collectionCounter");
+
+
+function updateCollection() {
+
+    const group = collectionGroups[collectionIndex];
+
+    const leftProduct = collectionProducts[group[0]];
+    const centerProduct = collectionProducts[group[1]];
+    const rightProduct = collectionProducts[group[2]];
+
+
+    // Left
+    collectionLeft.href = leftProduct.shopee;
+    collectionLeft.querySelector("img").src = leftProduct.image;
+
+
+    // Center
+    collectionCenter.href = centerProduct.shopee;
+    collectionCenter.querySelector("img").src = centerProduct.image;
+
+
+    // Right
+    collectionRight.href = rightProduct.shopee;
+    collectionRight.querySelector("img").src = rightProduct.image;
+
+
+    // Counter
+    collectionCounter.textContent =
+        `${String(collectionIndex + 1).padStart(2, "0")} — ${String(collectionGroups.length).padStart(2, "0")}`;
+
+}
+
+
+// Previous
+collectionPrev.addEventListener("click", () => {
+
+    collectionIndex--;
+
+    if (collectionIndex < 0) {
+        collectionIndex = collectionGroups.length - 1;
+    }
+
+    updateCollection();
+
+});
+
+
+// Next
+collectionNext.addEventListener("click", () => {
+
+    collectionIndex++;
+
+    if (collectionIndex >= collectionGroups.length) {
+        collectionIndex = 0;
+    }
+
+    updateCollection();
+
+});
+
+
+// Initial display
+updateCollection();
+
+
+
+/* =========================================
    SMOOTH SCROLL
 ========================================= */
 
