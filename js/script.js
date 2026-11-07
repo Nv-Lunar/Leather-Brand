@@ -303,4 +303,88 @@ anchorLinks.forEach(link => {
 
     });
 
-});
+    
+        (function () {
+      var WA_NUMBER = "6281216103059";
+        var WA_TEXT = "Halo SKAKMAT Collection, saya tertarik dengan produk Anda.";
+    
+        var ua = navigator.userAgent || "";
+        var isAndroid = /Android/i.test(ua);
+        var isIOS = /iPhone|iPad|iPod/i.test(ua);
+        // WhatsApp, Instagram, Facebook, TikTok, dll. in-app browser
+        var isInApp = /FBAN|FBAV|Instagram|Line|TikTok|WhatsApp|wv\)/i.test(ua) ||
+        (isAndroid && /; wv\)/.test(ua));
+    
+        var webUrl = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(WA_TEXT);
+        var schemeUrl = "whatsapp://send?phone=" + WA_NUMBER + "&text=" + encodeURIComponent(WA_TEXT);
+    
+        function showFallback() {
+        if (document.getElementById("wa-fallback")) return;
+        var box = document.createElement("div");
+        box.id = "wa-fallback";
+        box.style.cssText =
+        "position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;" +
+        "background:#1a1a1a;color:#fff;padding:16px;border-radius:12px;" +
+        "font:14px/1.5 sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.4);";
+        box.innerHTML =
+        '<p style="margin:0 0 10px">Tombol WhatsApp tidak bisa dibuka dari browser ini. ' +
+            'Silakan salin nomor kami atau buka website lewat Chrome.</p>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+            '<button id="wa-copy" style="flex:1;padding:10px;border:0;border-radius:8px;background:#25D366;color:#fff;font-weight:600">Salin Nomor +' + WA_NUMBER + '</button>' +
+            '<button id="wa-chrome" style="flex:1;padding:10px;border:0;border-radius:8px;background:#444;color:#fff">Buka di Chrome</button>' +
+            '<button id="wa-close" style="padding:10px;border:0;border-radius:8px;background:transparent;color:#aaa">Tutup</button>' +
+            '</div>';
+        document.body.appendChild(box);
+    
+        document.getElementById("wa-copy").onclick = function () {
+          var num = "+" + WA_NUMBER;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(num).then(function () { alert("Nomor disalin: " + num); });
+          } else {
+            prompt("Salin nomor ini:", num);
+          }
+        };
+        document.getElementById("wa-chrome").onclick = function () {
+          // Intent Chrome khusus Android; membuka halaman yang sama di Chrome
+          var u = location.href.replace(/^https?:\/\//, "");
+        var scheme = location.protocol.replace(":", "");
+        location.href = "intent://" + u + "#Intent;scheme=" + scheme +
+        ";package=com.android.chrome;end";
+        };
+        document.getElementById("wa-close").onclick = function () {box.remove(); };
+      }
+    
+        function openWhatsApp(e) {
+        // Di browser biasa (Chrome/Safari/desktop): biarkan link berjalan normal
+        if (!isInApp) {
+            e.preventDefault();
+        window.location.href = webUrl;
+        return;
+        }
+    
+        // Di in-app browser: coba URL scheme langsung
+        e.preventDefault();
+        var left = false;
+        var onHide = function () {left = true; };
+        document.addEventListener("visibilitychange", onHide);
+        window.addEventListener("pagehide", onHide);
+    
+        window.location.href = schemeUrl;
+    
+        // Jika setelah 1,5 detik halaman masih terlihat -> gagal, tampilkan fallback
+        setTimeout(function () {
+            document.removeEventListener("visibilitychange", onHide);
+        window.removeEventListener("pagehide", onHide);
+        if (!left && !document.hidden) showFallback();
+        }, 1500);
+      }
+    
+        var links = document.querySelectorAll("a.js-wa");
+        for (var i = 0; i < links.length; i++) {
+            links[i].setAttribute("href", webUrl);
+        links[i].removeAttribute("target");
+        links[i].addEventListener("click", openWhatsApp);
+      }
+    })();
+
+});    
