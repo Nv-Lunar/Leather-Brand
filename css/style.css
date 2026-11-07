@@ -969,11 +969,11 @@ h2 em {
 }
 
 .footer-logo img {
-  width: 300px;
-  height: 105px;
-  object-fit: contain;
-  filter: none;
-  transition: 0.3s ease;
+    width: 300px;
+    height: 105px;
+    object-fit: contain;
+    filter: none;
+    transition: 0.3s ease;
 }
 
 .footer p {
@@ -1146,11 +1146,8 @@ h2 em {
   }
 
   .navbar-logo {
-    width: 300px;
-    height: 105px;
-    object-fit: contain;
-    filter: none;
-    transition: 0.3s ease;
+    width: 120px;
+    height: 45px;
   }
 
   .hero {
